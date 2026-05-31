@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lv.5 隨機選擇題遊戲</title>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Microsoft JhengHei", Arial, sans-serif;
+        background: #f1f5f9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 24px;
+        color: #0f172a;
+    }
+
+    .container {
+        width: min(900px, 100%);
+        background: white;
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.15);
+    }
+
+    h1 {
+        margin: 0;
+        text-align: center;
+        font-size: 40px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #64748b;
+        margin-bottom: 28px;
+        font-size: 18px;
+    }
+
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        color: #475569;
+        font-weight: bold;
+    }
+
+    .question-box {
+        background: #eff6ff;
+        border: 2px solid #bfdbfe;
+        padding: 24px;
+        border-radius: 18px;
+        font-size: 28px;
+        font-weight: bold;
+        line-height: 1.4;
+        min-height: 120px;
+        display: flex;
+        align-items: center;
+    }
+
+    .choices {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 24px;
+    }
+
+    button {
+        border: none;
+        border-radius: 14px;
+        padding: 14px 22px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        background: #2563eb;
+        color: white;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+
+    .choice {
+        border: 2px solid #cbd5e1;
+        background: white;
+        color: #0f172a;
+        border-radius: 16px;
+        padding: 18px;
+        font-size: 20px;
+        text-align: left;
+        cursor: pointer;
+        transition: 0.15s;
+        min-height: 74px;
+        white-space: normal;
+        line-height: 1.35;
+    }
+
+    .choice:hover {
+        border-color: #2563eb;
+        transform: translateY(-2px);
+    }
+
+    .choice.correct {
+        background: #dcfce7;
+        border-color: #22c55e;
+        color: #166534;
+        font-weight: bold;
+    }
+
+    .choice.wrong {
+        background: #fee2e2;
+        border-color: #ef4444;
+        color: #991b1b;
+        font-weight: bold;
+    }
+
+    .choice:disabled {
+        cursor: default;
+        opacity: 1;
+    }
+
+    .result {
+        margin-top: 24px;
+        font-size: 26px;
+        font-weight: bold;
+        text-align: center;
+        min-height: 38px;
+    }
+
+    .btn-row {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-top: 24px;
+        flex-wrap: wrap;
+    }
+
+    .gray {
+        background: #64748b;
+    }
+
+    @media (max-width: 700px) {
+        .container {
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 30px;
+        }
+
+        .question-box {
+            font-size: 22px;
+        }
+
+        .choices {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Lv.5 隨機選擇題遊戲</h1>
+    <div class="subtitle">按「隨機抽題」後，從等級五題庫抽出一題作答。</div>
+
+    <div class="top-bar">
+        <div id="questionNumber">目前題目：尚未抽題</div>
+        <div id="score">答對：0　答錯：0</div>
+    </div>
+
+    <div class="question-box" id="questionText">
+        請先按下「隨機抽題」。
+    </div>
+
+    <div class="choices">
+        <button class="choice" id="A" onclick="checkAnswer('A')">A.</button>
+        <button class="choice" id="B" onclick="checkAnswer('B')">B.</button>
+        <button class="choice" id="C" onclick="checkAnswer('C')">C.</button>
+        <button class="choice" id="D" onclick="checkAnswer('D')">D.</button>
+    </div>
+
+    <div class="result" id="result"></div>
+
+    <div class="btn-row">
+        <button onclick="drawQuestion()">隨機抽題</button>
+        <button class="gray" onclick="resetScore()">分數歸零</button>
+    </div>
+</div>
+
+<script>
+const questions = [
+    {
+        "question": "師大全部有幾個系？",
+        "choices": {
+            "A": "38",
+            "B": "48",
+            "C": "58",
+            "D": "68"
+        },
+        "answer": "C"
+    },
+    {
+        "question": "火山矽肺症的拼法是下面哪一個？",
+        "choices": {
+            "A": "Pneumonoultramicroscopicsilicovolcanoconiosi",
+            "B": "Pneumonoultramultiscopicsiliciororanoconiosi",
+            "C": "PnlemonoultramicroscopenCillicovolcanoconiosi",
+            "D": "Pneumonoultramicrosolticsilicococolanoconiosi"
+        },
+        "answer": "A"
+    },
+    {
+        "question": "以下哪一個國家面積最大？",
+        "choices": {
+            "A": "羅馬尼亞",
+            "B": "保加利亞",
+            "C": "克羅埃西亞",
+            "D": "奈及利亞"
+        },
+        "answer": "D"
+    }
+];
+
+let currentQuestion = null;
+let correctCount = 0;
+let wrongCount = 0;
+let answered = false;
+
+function drawQuestion() {
+    const index = Math.floor(Math.random() * questions.length);
+    currentQuestion = questions[index];
+    answered = false;
+
+    document.getElementById("questionNumber").textContent = "目前題目：第 " + (index + 1) + " 題";
+    document.getElementById("questionText").textContent = currentQuestion.question;
+    document.getElementById("result").textContent = "";
+
+    ["A", "B", "C", "D"].forEach(letter => {
+        const btn = document.getElementById(letter);
+        btn.textContent = letter + ". " + currentQuestion.choices[letter];
+        btn.className = "choice";
+        btn.disabled = false;
+    });
+}
+
+function checkAnswer(choice) {
+    if (!currentQuestion) {
+        document.getElementById("result").textContent = "請先抽題！";
+        document.getElementById("result").style.color = "#991b1b";
+        return;
+    }
+
+    if (answered) return;
+    answered = true;
+
+    const correct = currentQuestion.answer;
+
+    ["A", "B", "C", "D"].forEach(letter => {
+        const btn = document.getElementById(letter);
+        btn.disabled = true;
+
+        if (letter === correct) {
+            btn.classList.add("correct");
+        }
+    });
+
+    if (choice === correct) {
+        correctCount++;
+        document.getElementById(choice).classList.add("correct");
+        document.getElementById("result").textContent = "答對！";
+        document.getElementById("result").style.color = "#166534";
+    } else {
+        wrongCount++;
+        document.getElementById(choice).classList.add("wrong");
+        document.getElementById("result").textContent = "答錯！正確答案是 " + correct;
+        document.getElementById("result").style.color = "#991b1b";
+    }
+
+    updateScore();
+}
+
+function updateScore() {
+    document.getElementById("score").textContent = "答對：" + correctCount + "　答錯：" + wrongCount;
+}
+
+function resetScore() {
+    correctCount = 0;
+    wrongCount = 0;
+    updateScore();
+    document.getElementById("result").textContent = "";
+}
+</script>
+</body>
+</html>
