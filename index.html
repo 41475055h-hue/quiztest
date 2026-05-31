@@ -5,297 +5,221 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lv.5 隨機選擇題遊戲</title>
 <style>
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        margin: 0;
-        min-height: 100vh;
-        font-family: "Microsoft JhengHei", Arial, sans-serif;
-        background: #f1f5f9;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 24px;
-        color: #0f172a;
-    }
-
-    .container {
-        width: min(900px, 100%);
-        background: white;
-        border-radius: 24px;
-        padding: 32px;
-        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.15);
-    }
-
-    h1 {
-        margin: 0;
-        text-align: center;
-        font-size: 40px;
-    }
-
-    .subtitle {
-        text-align: center;
-        color: #64748b;
-        margin-bottom: 28px;
-        font-size: 18px;
-    }
-
-    .top-bar {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        flex-wrap: wrap;
-        margin-bottom: 20px;
-        color: #475569;
-        font-weight: bold;
-    }
-
-    .question-box {
-        background: #eff6ff;
-        border: 2px solid #bfdbfe;
-        padding: 24px;
-        border-radius: 18px;
-        font-size: 28px;
-        font-weight: bold;
-        line-height: 1.4;
-        min-height: 120px;
-        display: flex;
-        align-items: center;
-    }
-
-    .choices {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-        margin-top: 24px;
-    }
-
-    button {
-        border: none;
-        border-radius: 14px;
-        padding: 14px 22px;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        background: #2563eb;
-        color: white;
-    }
-
-    button:hover {
-        opacity: 0.9;
-    }
-
-    .choice {
-        border: 2px solid #cbd5e1;
-        background: white;
-        color: #0f172a;
-        border-radius: 16px;
-        padding: 18px;
-        font-size: 20px;
-        text-align: left;
-        cursor: pointer;
-        transition: 0.15s;
-        min-height: 74px;
-        white-space: normal;
-        line-height: 1.35;
-    }
-
-    .choice:hover {
-        border-color: #2563eb;
-        transform: translateY(-2px);
-    }
-
-    .choice.correct {
-        background: #dcfce7;
-        border-color: #22c55e;
-        color: #166534;
-        font-weight: bold;
-    }
-
-    .choice.wrong {
-        background: #fee2e2;
-        border-color: #ef4444;
-        color: #991b1b;
-        font-weight: bold;
-    }
-
-    .choice:disabled {
-        cursor: default;
-        opacity: 1;
-    }
-
-    .result {
-        margin-top: 24px;
-        font-size: 26px;
-        font-weight: bold;
-        text-align: center;
-        min-height: 38px;
-    }
-
-    .btn-row {
-        display: flex;
-        gap: 12px;
-        justify-content: center;
-        margin-top: 24px;
-        flex-wrap: wrap;
-    }
-
-    .gray {
-        background: #64748b;
-    }
-
-    @media (max-width: 700px) {
-        .container {
-            padding: 20px;
-        }
-
-        h1 {
-            font-size: 30px;
-        }
-
-        .question-box {
-            font-size: 22px;
-        }
-
-        .choices {
-            grid-template-columns: 1fr;
-        }
-    }
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:"Microsoft JhengHei",Arial,sans-serif;background:#f1f5f9;display:flex;justify-content:center;align-items:center;padding:24px;color:#0f172a}.container{width:min(960px,100%);background:white;border-radius:24px;padding:32px;box-shadow:0 16px 40px rgba(15,23,42,.15)}h1{margin:0;text-align:center;font-size:40px}.subtitle{text-align:center;color:#64748b;margin-bottom:28px;font-size:18px}.top-bar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px;color:#475569;font-weight:bold}.question-box{background:#eff6ff;border:2px solid #bfdbfe;padding:24px;border-radius:18px;font-size:26px;font-weight:bold;line-height:1.45;min-height:130px;display:flex;align-items:center}.choices{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}button{border:none;border-radius:14px;padding:14px 22px;font-size:18px;font-weight:bold;cursor:pointer;background:#2563eb;color:white}button:hover{opacity:.9}.choice{border:2px solid #cbd5e1;background:white;color:#0f172a;border-radius:16px;padding:18px;font-size:19px;text-align:left;cursor:pointer;transition:.15s;min-height:78px;white-space:normal;line-height:1.45}.choice:hover{border-color:#2563eb;transform:translateY(-2px)}.choice.correct{background:#dcfce7;border-color:#22c55e;color:#166534;font-weight:bold}.choice.wrong{background:#fee2e2;border-color:#ef4444;color:#991b1b;font-weight:bold}.choice:disabled{cursor:default;opacity:1}.result{margin-top:24px;font-size:26px;font-weight:bold;text-align:center;min-height:38px}.btn-row{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap}.gray{background:#64748b}@media(max-width:700px){.container{padding:20px}h1{font-size:30px}.question-box{font-size:22px}.choices{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="container">
-    <h1>Lv.5 隨機選擇題遊戲</h1>
-    <div class="subtitle">按「隨機抽題」後，從等級五題庫抽出一題作答。</div>
-
-    <div class="top-bar">
-        <div id="questionNumber">目前題目：尚未抽題</div>
-        <div id="score">答對：0　答錯：0</div>
-    </div>
-
-    <div class="question-box" id="questionText">
-        請先按下「隨機抽題」。
-    </div>
-
-    <div class="choices">
-        <button class="choice" id="A" onclick="checkAnswer('A')">A.</button>
-        <button class="choice" id="B" onclick="checkAnswer('B')">B.</button>
-        <button class="choice" id="C" onclick="checkAnswer('C')">C.</button>
-        <button class="choice" id="D" onclick="checkAnswer('D')">D.</button>
-    </div>
-
-    <div class="result" id="result"></div>
-
-    <div class="btn-row">
-        <button onclick="drawQuestion()">隨機抽題</button>
-        <button class="gray" onclick="resetScore()">分數歸零</button>
-    </div>
+  <h1>Lv.5 隨機選擇題遊戲</h1>
+  <div class="subtitle">按「隨機抽題」後，從等級五題庫抽出一題作答。</div>
+  <div class="top-bar">
+    <div id="questionNumber">目前題目：尚未抽題</div>
+    <div id="score">答對：0　答錯：0</div>
+  </div>
+  <div class="question-box" id="questionText">請先按下「隨機抽題」。</div>
+  <div class="choices">
+    <button class="choice" id="A" onclick="checkAnswer('A')">A.</button>
+    <button class="choice" id="B" onclick="checkAnswer('B')">B.</button>
+    <button class="choice" id="C" onclick="checkAnswer('C')">C.</button>
+    <button class="choice" id="D" onclick="checkAnswer('D')">D.</button>
+  </div>
+  <div class="result" id="result"></div>
+  <div class="btn-row">
+    <button onclick="drawQuestion()">隨機抽題</button>
+    <button class="gray" onclick="resetScore()">分數歸零</button>
+  </div>
 </div>
-
 <script>
 const questions = [
-    {
-        "question": "師大全部有幾個系？",
-        "choices": {
-            "A": "38",
-            "B": "48",
-            "C": "58",
-            "D": "68"
-        },
-        "answer": "C"
+  {
+    "question": "請問北歐國家「芬蘭」的全國總人口數大約是多少？",
+    "choices": {
+      "A": "約 250 萬人",
+      "B": "約 550 萬人",
+      "C": "約 1,237 萬人",
+      "D": "約 2,312 萬人"
     },
-    {
-        "question": "火山矽肺症的拼法是下面哪一個？",
-        "choices": {
-            "A": "Pneumonoultramicroscopicsilicovolcanoconiosi",
-            "B": "Pneumonoultramultiscopicsiliciororanoconiosi",
-            "C": "PnlemonoultramicroscopenCillicovolcanoconiosi",
-            "D": "Pneumonoultramicrosolticsilicococolanoconiosi"
-        },
-        "answer": "A"
+    "answer": "B"
+  },
+  {
+    "question": "世界第二高峰「喬戈里峰」（簡稱 K2），其海拔高度大約是多高？",
+    "choices": {
+      "A": "8,848 公尺",
+      "B": "8,611 公尺",
+      "C": "8,586 公尺",
+      "D": "8,126 公尺"
     },
-    {
-        "question": "以下哪一個國家面積最大？",
-        "choices": {
-            "A": "羅馬尼亞",
-            "B": "保加利亞",
-            "C": "克羅埃西亞",
-            "D": "奈及利亞"
-        },
-        "answer": "D"
-    }
+    "answer": "B"
+  },
+  {
+    "question": "請問台灣的澎湖群島，大大小小總共大約由幾個島嶼組成？",
+    "choices": {
+      "A": "36 個",
+      "B": "64 個",
+      "C": "90 個",
+      "D": "104 個"
+    },
+    "answer": "C"
+  },
+  {
+    "question": "英文縮寫「ICPO」是下列哪一個國際組織的簡稱？",
+    "choices": {
+      "A": "國際奧林匹克委員會",
+      "B": "國際紅十字會",
+      "C": "國際綠色和平組織",
+      "D": "國際刑警組織"
+    },
+    "answer": "D"
+  },
+  {
+    "question": "特斯拉（Tesla）與 SpaceX 的創辦人伊隆·馬斯克（Elon Musk），他的身高大約是多少？",
+    "choices": {
+      "A": "178 公分",
+      "B": "180 公分",
+      "C": "188 公分",
+      "D": "196 公分"
+    },
+    "answer": "C"
+  },
+  {
+    "question": "在工程數學與電路分析中，我們使用「拉普拉斯轉換」（Laplace Transform）的主要目的通常是為了什麼？",
+    "choices": {
+      "A": "將時域（Time domain）的微分方程，轉換為頻域 / s 域（s-domain）的代數方程式來簡化求解",
+      "B": "將非線性電路直接轉換為線性電路",
+      "C": "計算出電磁波在三維空間中的傳播速度",
+      "D": "將十進位數字轉換為二進位的數位邏輯訊號"
+    },
+    "answer": "A"
+  },
+  {
+    "question": "師大英語系去年的「繁星推薦」錄取標準中，在校學業成績全校排名百分比（最低錄取趴數）大約落在多少？",
+    "choices": {
+      "A": "1% ~ 2%",
+      "B": "9% ~ 12%",
+      "C": "3% ~ 6%",
+      "D": "9% ~ 12%"
+    },
+    "answer": "B"
+  },
+  {
+    "question": "下列哪一個美國職棒大聯盟（MLB）的球場是建造年代最早、且目前仍在使用的最老球場？",
+    "choices": {
+      "A": "波士頓 芬威球場 (Fenway Park)",
+      "B": "芝加哥 瑞格利球場 (Wrigley Field)",
+      "C": "洛杉磯 道奇體育場 (Dodger Stadium)",
+      "D": "紐約 洋基體育場 (Yankee Stadium)"
+    },
+    "answer": "A"
+  },
+  {
+    "question": "圓周率（π）小數點後的第 15 位數字是多少？",
+    "choices": {
+      "A": "0",
+      "B": "3",
+      "C": "7",
+      "D": "9"
+    },
+    "answer": "B"
+  },
+  {
+    "question": "國立臺灣師範大學的「和平校區」（校本部）占地面積大約是多大？",
+    "choices": {
+      "A": "約 2 公頃",
+      "B": "約 9 公頃",
+      "C": "約 22 公頃",
+      "D": "約 45 公頃"
+    },
+    "answer": "B"
+  },
+  {
+    "question": "請問師大校本部正中央的「日光大道」，兩側總共種了幾棵樹？",
+    "choices": {
+      "A": "32 棵",
+      "B": "48 棵",
+      "C": "60 棵",
+      "D": "72 棵"
+    },
+    "answer": ""
+  },
+  {
+    "question": "處女座的主星是誰？",
+    "choices": {
+      "A": "角宿一",
+      "B": "天狼星",
+      "C": "天津四",
+      "D": "畢宿五"
+    },
+    "answer": "A"
+  },
+  {
+    "question": "請問 3 月 21 日是世界什麼日？",
+    "choices": {
+      "A": "世界地球日",
+      "B": "世界唐氏症日",
+      "C": "世界環境日",
+      "D": "世界衛生日"
+    },
+    "answer": "B"
+  },
+  {
+    "question": "請問「國立台灣師範大學」這八個中文字，總共有多少筆劃？（以「台灣」寫法為準）",
+    "choices": {
+      "A": "85 劃",
+      "B": "90 劃",
+      "C": "99 劃",
+      "D": "104 劃"
+    },
+    "answer": "B"
+  }
 ];
-
-let currentQuestion = null;
-let correctCount = 0;
-let wrongCount = 0;
-let answered = false;
-
-function drawQuestion() {
-    const index = Math.floor(Math.random() * questions.length);
-    currentQuestion = questions[index];
-    answered = false;
-
-    document.getElementById("questionNumber").textContent = "目前題目：第 " + (index + 1) + " 題";
-    document.getElementById("questionText").textContent = currentQuestion.question;
-    document.getElementById("result").textContent = "";
-
-    ["A", "B", "C", "D"].forEach(letter => {
-        const btn = document.getElementById(letter);
-        btn.textContent = letter + ". " + currentQuestion.choices[letter];
-        btn.className = "choice";
-        btn.disabled = false;
-    });
+let currentQuestion=null, correctCount=0, wrongCount=0, answered=false;
+function drawQuestion(){
+  const index=Math.floor(Math.random()*questions.length);
+  currentQuestion=questions[index]; answered=false;
+  document.getElementById("questionNumber").textContent="目前題目：第 "+(index+1)+" 題 / 共 "+questions.length+" 題";
+  document.getElementById("questionText").textContent=currentQuestion.question;
+  document.getElementById("result").textContent="";
+  ["A","B","C","D"].forEach(letter=>{
+    const btn=document.getElementById(letter);
+    btn.textContent=letter+". "+currentQuestion.choices[letter];
+    btn.className="choice";
+    btn.disabled=false;
+  });
 }
-
-function checkAnswer(choice) {
-    if (!currentQuestion) {
-        document.getElementById("result").textContent = "請先抽題！";
-        document.getElementById("result").style.color = "#991b1b";
-        return;
-    }
-
-    if (answered) return;
-    answered = true;
-
-    const correct = currentQuestion.answer;
-
-    ["A", "B", "C", "D"].forEach(letter => {
-        const btn = document.getElementById(letter);
-        btn.disabled = true;
-
-        if (letter === correct) {
-            btn.classList.add("correct");
-        }
-    });
-
-    if (choice === correct) {
-        correctCount++;
-        document.getElementById(choice).classList.add("correct");
-        document.getElementById("result").textContent = "答對！";
-        document.getElementById("result").style.color = "#166534";
-    } else {
-        wrongCount++;
-        document.getElementById(choice).classList.add("wrong");
-        document.getElementById("result").textContent = "答錯！正確答案是 " + correct;
-        document.getElementById("result").style.color = "#991b1b";
-    }
-
-    updateScore();
+function checkAnswer(choice){
+  if(!currentQuestion){
+    document.getElementById("result").textContent="請先抽題！";
+    document.getElementById("result").style.color="#991b1b";
+    return;
+  }
+  if(answered) return;
+  answered=true;
+  const correct=currentQuestion.answer;
+  ["A","B","C","D"].forEach(letter=>{
+    const btn=document.getElementById(letter);
+    btn.disabled=true;
+    if(correct && letter===correct) btn.classList.add("correct");
+  });
+  if(!correct){
+    document.getElementById("result").textContent="這題尚未設定標準答案，請之後補上正確選項。";
+    document.getElementById("result").style.color="#92400e";
+    return;
+  }
+  if(choice===correct){
+    correctCount++;
+    document.getElementById(choice).classList.add("correct");
+    document.getElementById("result").textContent="答對！";
+    document.getElementById("result").style.color="#166534";
+  }else{
+    wrongCount++;
+    document.getElementById(choice).classList.add("wrong");
+    document.getElementById("result").textContent="答錯！正確答案是 "+correct;
+    document.getElementById("result").style.color="#991b1b";
+  }
+  updateScore();
 }
-
-function updateScore() {
-    document.getElementById("score").textContent = "答對：" + correctCount + "　答錯：" + wrongCount;
-}
-
-function resetScore() {
-    correctCount = 0;
-    wrongCount = 0;
-    updateScore();
-    document.getElementById("result").textContent = "";
-}
+function updateScore(){document.getElementById("score").textContent="答對："+correctCount+"　答錯："+wrongCount}
+function resetScore(){correctCount=0;wrongCount=0;updateScore();document.getElementById("result").textContent=""}
 </script>
 </body>
 </html>
